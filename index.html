@@ -1,17 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
-<body>
-</body>
-
 
 <body>
-</body>
+<!------>
+<nav class="navbar navbar-inverse navbar-static-top">
+    <button type="button" class="navbar-toggle pull-left toggle-nav"
+            aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+</nav>
 
+<div class="site-wrapper">
+    <div class="site-canvas">
+        <main id="map"></main>
+        <aside class="site-menu">
+            <form role="form">
+                <div class="input-group">
+                    <input class="form-control"
+                           data-bind="textInput: filter">
+                    <span class="input-group-addon">
+                        Filter
+                        <i class="glyphicon glyphicon-search"></i>
+                    </span>
+                </div>
+            </form>
+            <ul class="list-unstyled"
+                data-bind="foreach: filteredLocations">
+                <li>
+                    <a href="#"
+                       data-bind="click: $parent.showLocation, text: title"></a>
+                </li>
+            </ul>
+        </aside>
+    </div>
+</div>
+<div class="container-fluid">
+<div class="row">
 
+	<div class="col-3">
+		<div class="input-group">
+		<input data-bind="textInput: filterPlaces" class="form-control" placeholder="filter">
+		<span class="input-group-btn">
+		<button class="btn btn-default" type="submit" data-bind"click: filter"> go</button></span>
+		</div>
+	</div>
+	<div class="col-9">
+ <main class="map" id="map"></main>
+  </div>
+
+</div>
+</div>
+
+<!--local script link-->
+<script type="text/javascript" src="app.js"></script>
 <script
-src="js/knockout-3.4.2.js" charset= "utf-8">
+        src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+</script><!--->
+  <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAz4SIBatO8A1AZVDINcA_G58e9d9bigxw&v=3&callback=initMap">
+    </script>
+
+<script src="js/knockout-3.4.2.js" charset= "utf-8">
 </script>
+
+  </body>
+
+
 </html>
