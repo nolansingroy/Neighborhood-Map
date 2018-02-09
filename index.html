@@ -36,6 +36,7 @@
                         Filter
                         <i class="glyphicon glyphicon-search"></i>
                     </span>
+                      <input id="show-listings" type="button" value="Show Listings">
                 </div>
             </form>
             <ul class="list-unstyled"
@@ -57,6 +58,16 @@
 		<span class="input-group-btn">
 		<button class="btn btn-default" type="submit" data-bind"click: filter"> go</button></span>
 		</div>
+    <div>
+    <p>firstname: <strong data-bind="text: firstName"></strong></p>
+
+      <ul class="list-unstyled" data-bind="foreach: filteredLocations">
+          <li><a href="#" data-bind="text: name, click: $parent.showItemInfo"></a></li>
+</ul>
+      <ul class="sidebar-nav" data-bind="foreach: filteredPlaces" style="margin-top: 60px;">
+                  <li><a href="#" data-bind="text: name" onclick="clickedMarker(this.innerHTML);"></a></li>
+</ul>
+    </div>
 	</div>
 	<div class="col-9">
  <main class="map" id="map"></main>
@@ -76,7 +87,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAz4SIBatO8A1AZVDINcA_G58e9d9bigxw&v=3&callback=initMap">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyAz4SIBatO8A1AZVDINcA_G58e9d9bigxw&v=3&callback=initMap">
     </script>
 
 <script src="js/knockout-3.4.2.js" charset= "utf-8">

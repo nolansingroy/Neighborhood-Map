@@ -1,59 +1,55 @@
-
-
-
-  var map;
-
+var map;
 var markers = [];
+
+var placeMarkers = [];
+// Normally we'd have these in a database instead.
+var locations = [
+  {title: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
+  {title: 'Chelsea Loft', location: {lat: 40.7444883, lng: -73.9949465}},
+  {title: 'Union Square Open Floor Plan', location: {lat: 40.7347062, lng: -73.9895759}},
+  {title: 'East Village Hip Studio', location: {lat: 40.7281777, lng: -73.984377}},
+  {title: 'TriBeCa Artsy Bachelor Pad', location: {lat: 40.7195264, lng: -74.0089934}},
+  {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}
+];
   function initMap() {
+
     // Constructor creates a new map - only center and zoom are required.
     map = new google.maps.Map(document.getElementById('map'), {
       center: {
         lat: 40.7413549,
         lng: -73.9980244
       },
-      zoom: 21
+      zoom: 13,
+      mapTypeControl: false
     });
-    var tribeca = {lat:40.7413549, lng: -74.0089934};
+
+
     //infowindow = new google.maps.InfoWindow();
     //ko.applyBindings(new appViewModel());
 
 //----Defines data and behavior of the UI
 
 
-
+// Normally we'd have these in a database instead.
 var locations = [
-    {
-        title: 'Ion Orchard',
-        location: {lat: 1.313472, lng: 103.831670}
-    },
-    {
-        title: 'Esplanade Singapore',
-        location: {lat: 1.289836, lng: 103.856417}
-    },
-    {
-        title: 'Sentosa',
-        location: {lat: 1.250466, lng: 103.830388}
-    },
-    {
-        title: 'Marina Bay Sands',
-        location: {lat: 1.283213, lng: 103.860309}
-    },
-    {
-        title: 'Singapore Zoo',
-        location: {lat: 1.404346, lng: 103.793022}
-    }
+  {title: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
+  {title: 'Chelsea Loft', location: {lat: 40.7444883, lng: -73.9949465}},
+  {title: 'Union Square Open Floor Plan', location: {lat: 40.7347062, lng: -73.9895759}},
+  {title: 'East Village Hip Studio', location: {lat: 40.7281777, lng: -73.984377}},
+  {title: 'TriBeCa Artsy Bachelor Pad', location: {lat: 40.7195264, lng: -74.0089934}},
+  {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}
 ];
 
 var largeInfowindow = new google.maps.InfoWindow();
 // The following group uses the location array to create an array of markers on initialize.
-//for (var i = 0; i < locations.length; i++) {
+for (var i = 0; i < locations.length; i++) {
   // Get the position from the location array.
-//  var position = locations[i].location;
- // var title = locations[i].title;
+  var position = locations[i].location;
+  var title = locations[i].title;
   // Create a marker per location, and put into markers array.
    var marker = new google.maps.Marker({
-    position: tribeca,
-    title: 'First Marker!',
+    position: position,
+    title: title,
     animation: google.maps.Animation.DROP,
     id: i
   });
@@ -61,15 +57,39 @@ var infowindow = new google.maps.InfoWindow({
 	content: 'info window'
 });
   // Push the marker to our array of markers.
-  //markers.push(marker);
+  markers.push(marker);
   // Create an onclick event to open an infowindow at each marker.
-  //marker.addListener('click', function() {
- //   populateInfoWindow(this, largeInfowindow);
- /// });
-//}
+  marker.addListener('click', function() {
+    populateInfoWindow(this, largeInfowindow);
+  });
 }
-var appViewModel = function () {
+showListings();
+ko.applyBindings(new appViewModel());
 
+}
+//###Defines data and Behavior of UI
+var appViewModel = function () {
+var self = this;
+this.firstName = ko.observable("nolan");
+self.filter = ko.observable("");
+this.filteredLocations= ko.observableArray
+});
+
+self.filterPlaces= ko.observable("yeah lets go!");
+
+
+
+
+};
+/**
+* Open marker info window when corresponding item was clicked.
+*/
+function clickedMarker(name) {
+	markers.forEach(function(markerItem) {
+		if (markerItem.name == name) {
+			google.maps.event.trigger(markerItem.marker, 'click');
+		}
+	});
 }
 
 function populateInfoWindow(marker, infowindow) {
@@ -83,6 +103,104 @@ function populateInfoWindow(marker, infowindow) {
       infowindow.marker = null;
     });
   }
+}
+// This function will loop through the markers array and display them all.
+function showListings() {
+  var bounds = new google.maps.LatLngBounds();
+  // Extend the boundaries of the map for each marker and display the marker
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+    bounds.extend(markers[i].position);
+  }
+  map.fitBounds(bounds);
+}
+
+      // This function creates markers for each place found in either places search.
+      function createMarkersForPlaces(places) {
+        var bounds = new google.maps.LatLngBounds();
+        for (var i = 0; i < places.length; i++) {
+          var place = places[i];
+          var icon = {
+            url: place.icon,
+            size: new google.maps.Size(35, 35),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(15, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          };
+          // Create a marker for each place.
+          var marker = new google.maps.Marker({
+            map: map,
+            icon: icon,
+            title: place.name,
+            position: place.geometry.location,
+            id: place.place_id
+          });
+          // Create a single infowindow to be used with the place details information
+          // so that only one is open at once.
+          var placeInfoWindow = new google.maps.InfoWindow();
+          // If a marker is clicked, do a place details search on it in the next function.
+          marker.addListener('click', function() {
+            if (placeInfoWindow.marker == this) {
+              console.log("This infowindow already is on this marker!");
+            } else {
+              getPlacesDetails(this, placeInfoWindow);
+            }
+          });
+          placeMarkers.push(marker);
+          if (place.geometry.viewport) {
+            // Only geocodes have viewport.
+            bounds.union(place.geometry.viewport);
+          } else {
+            bounds.extend(place.geometry.location);
+          }
+        }
+        map.fitBounds(bounds);
+      }
+
+// This is the PLACE DETAILS search - it's the most detailed so it's only
+// executed when a marker is selected, indicating the user wants more
+// details about that place.
+function getPlacesDetails(marker, infowindow) {
+  var service = new google.maps.places.PlacesService(map);
+  service.getDetails({
+    placeId: marker.id
+  }, function(place, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      // Set the marker property on this infowindow so it isn't created again.
+      infowindow.marker = marker;
+      var innerHTML = '<div>';
+      if (place.name) {
+        innerHTML += '<strong>' + place.name + '</strong>';
+      }
+      if (place.formatted_address) {
+        innerHTML += '<br>' + place.formatted_address;
+      }
+      if (place.formatted_phone_number) {
+        innerHTML += '<br>' + place.formatted_phone_number;
+      }
+      if (place.opening_hours) {
+        innerHTML += '<br><br><strong>Hours:</strong><br>' +
+            place.opening_hours.weekday_text[0] + '<br>' +
+            place.opening_hours.weekday_text[1] + '<br>' +
+            place.opening_hours.weekday_text[2] + '<br>' +
+            place.opening_hours.weekday_text[3] + '<br>' +
+            place.opening_hours.weekday_text[4] + '<br>' +
+            place.opening_hours.weekday_text[5] + '<br>' +
+            place.opening_hours.weekday_text[6];
+      }
+      if (place.photos) {
+        innerHTML += '<br><br><img src="' + place.photos[0].getUrl(
+            {maxHeight: 100, maxWidth: 200}) + '">';
+      }
+      innerHTML += '</div>';
+      infowindow.setContent(innerHTML);
+      infowindow.open(map, marker);
+      // Make sure the marker property is cleared if the infowindow is closed.
+      infowindow.addListener('closeclick', function() {
+        infowindow.marker = null;
+      });
+    }
+  });
 }
 
 /*
