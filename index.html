@@ -24,49 +24,21 @@
     </button>
 </nav>
 
-<div class="site-wrapper">
-    <div class="site-canvas">
-        <main id="map"></main>
-        <aside class="site-menu">
-            <form role="form">
-                <div class="input-group">
-                    <input class="form-control"
-                           data-bind="textInput: filter">
-                    <span class="input-group-addon">
-                        Filter
-                        <i class="glyphicon glyphicon-search"></i>
-                    </span>
-                      <input id="show-listings" type="button" value="Show Listings">
-                </div>
-            </form>
-            <ul class="list-unstyled"
-                data-bind="foreach: filteredLocations">
-                <li>
-                    <a href="#"
-                       data-bind="click: $parent.showLocation, text: title"></a>
-                </li>
-            </ul>
-        </aside>
-    </div>
-</div>
 <div class="container-fluid">
 <div class="row">
 
 	<div class="col-3">
 		<div class="input-group">
-		<input data-bind="textInput: filterPlaces" class="form-control" placeholder="filter">
+		<input data-bind="value: filter, valueUpdate:'afterkeydown'" class="form-control" placeholder="filter">
 		<span class="input-group-btn">
 		<button class="btn btn-default" type="submit" data-bind"click: filter"> go</button></span>
 		</div>
     <div>
-    <p>firstname: <strong data-bind="text: firstName"></strong></p>
 
       <ul class="list-unstyled" data-bind="foreach: filteredLocations">
-          <li><a href="#" data-bind="text: name, click: $parent.showItemInfo"></a></li>
+          <li><a href="#" data-bind="text: title, click: $parent.showItemInfo"></a></li>
 </ul>
-      <ul class="sidebar-nav" data-bind="foreach: filteredPlaces" style="margin-top: 60px;">
-                  <li><a href="#" data-bind="text: name" onclick="clickedMarker(this.innerHTML);"></a></li>
-</ul>
+  
     </div>
 	</div>
 	<div class="col-9">

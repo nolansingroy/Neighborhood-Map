@@ -71,13 +71,37 @@ ko.applyBindings(new appViewModel());
 var appViewModel = function () {
 var self = this;
 this.firstName = ko.observable("nolan");
-self.filter = ko.observable("");
-this.filteredLocations= ko.observableArray
-});
-
 self.filterPlaces= ko.observable("yeah lets go!");
 
+this.filter = ko.observable("");
+// Click functionality - when the cafe item is clicked on the sidebar, the
+// infobox of that particular marker opens
+this.locationClicked = function(location) {
+  google.maps.event.trigger(location.marker, 'click');
+};
 
+	// Filter places based on user input.
+	this.filteredLocations = ko.computed(function() {
+		var filter = self.filter().toLowerCase();
+		if (!filter) {
+			locations.forEach(function(location) {
+				if (location.marker) {
+					location.marker.setVisible(true);
+				}
+			});
+			return locations;
+		} else {
+			return ko.utils.arrayFilter(locations, function() {
+		 		var match = locaiton.title.toLowerCase().indexOf(filter) !== -1;
+		 		if (match) {
+		 			location.marker.setVisible(true);
+		 		} else {
+		 			location.marker.setVisible(false);
+		 		}
+		 		return match;
+		 	});
+		}
+});
 
 
 };
