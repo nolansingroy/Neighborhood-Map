@@ -92,7 +92,7 @@ this.locationClicked = function(location) {
 			return locations;
 		} else {
 			return ko.utils.arrayFilter(locations, function() {
-		 		var match = locaiton.title.toLowerCase().indexOf(filter) !== -1;
+		 		var match = location.title.toLowerCase().indexOf(filter) !== -1;
 		 		if (match) {
 		 			location.marker.setVisible(true);
 		 		} else {
@@ -108,9 +108,11 @@ this.locationClicked = function(location) {
 /**
 * Open marker info window when corresponding item was clicked.
 */
-function clickedMarker(name) {
+function clickedMarker(title) {
+  print("clickedMarker");
+
 	markers.forEach(function(markerItem) {
-		if (markerItem.name == name) {
+		if (markerItem.name == title) {
 			google.maps.event.trigger(markerItem.marker, 'click');
 		}
 	});
@@ -226,8 +228,9 @@ function getPlacesDetails(marker, infowindow) {
     }
   });
 }
-
-/*
+//TODO crate location Model that holds parameters of this.name ,this.posistion this.marker listener
+//this.set visible boolean
+/**
 var Location = function (data) {
     this.title = ko.observable(data.title);
     this.position = data.position;
@@ -320,7 +323,7 @@ var ViewModel = function () {
     };
 };
 
-/**
+
  * Initialize Google Maps.
  **/
 /*
