@@ -230,6 +230,27 @@ function getPlacesDetails(marker, infowindow) {
 }
 //TODO crate location Model that holds parameters of this.name ,this.posistion this.marker listener
 //this.set visible boolean
+
+var locModel= function (data){
+  var self = this;
+  this.title = observable(data.title);
+  this.position = data.position;
+  this.marker = new google.mapsMarker({
+    map: map,
+    position: this.position,
+    title: this.title()
+  });
+  this. marker.addListener('click', function () {
+    moreInfo(self.marker);
+    togglefunction(self.marker)
+  })
+}
+moreinfo function (){
+  console.log("more Info window pops up here!");
+}
+togglefunction (){
+  console.log("toggle fuction was called! ")
+}
 /**
 var Location = function (data) {
     this.title = ko.observable(data.title);
