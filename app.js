@@ -11,6 +11,15 @@ var locations = [
   {title: 'TriBeCa Artsy Bachelor Pad', location: {lat: 40.7195264, lng: -74.0089934}},
   {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}
 ];
+var iHospitals = [
+  {name: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
+  {name: 'Chelsea Loft', location: {lat: 40.7444883, lng: -73.9949465}},
+  {name: 'Union Square Open Floor Plan', location: {lat: 40.7347062, lng: -73.9895759}},
+  {name: 'East Village Hip Studio', location: {lat: 40.7281777, lng: -73.984377}},
+  {name: 'TriBeCa Artsy Bachelor Pad', location: {lat: 40.7195264, lng: -74.0089934}},
+  {name: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}
+];
+
   function initMap() {
 
     // Constructor creates a new map - only center and zoom are required.
@@ -29,7 +38,7 @@ var locations = [
 
 //----Defines data and behavior of the UI
 
-
+/**
 // Normally we'd have these in a database instead.
 var locations = [
   {title: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
@@ -64,6 +73,7 @@ var infowindow = new google.maps.InfoWindow({
   });
 }
 showListings();
+*/
 ko.applyBindings(new appViewModel());
 
 }
@@ -72,19 +82,26 @@ var appViewModel = function () {
 var self = this;
 this.firstName = ko.observable("nolan");
 self.filterPlaces= ko.observable("yeah lets go!");
-
+this.HospitalList = ko.observableArray([]);
 this.filter = ko.observable("");
 // Click functionality - when the cafe item is clicked on the sidebar, the
 // infobox of that particular marker opens
 this.locationClicked = function(location) {
   google.maps.event.trigger(location.marker, 'click');
 };
+//loop thru and add to array
+iHospitals.forEach(function(specificHopsital){
+  self.HospitalList.push(new HospitalModel(specificHopsital));
+})
 
+this.filterLocations = ko.computed(function () {
+
+})
 	// Filter places based on user input.
 	this.filteredLocations = ko.computed(function() {
 		var filter = self.filter().toLowerCase();
 		if (!filter) {
-			locations.forEach(function(location) {
+			iHospitals.forEach(function(iHospital) {
 				if (location.marker) {
 					location.marker.setVisible(true);
 				}
@@ -231,26 +248,37 @@ function getPlacesDetails(marker, infowindow) {
 //TODO crate location Model that holds parameters of this.name ,this.posistion this.marker listener
 //this.set visible boolean
 
-var locModel= function (data){
+/**
+###########  Hosipital Model data and behavior class ##########
+**/
+var HospitalModel= function (data){
   var self = this;
+  this.name = ko.observable(data.name);
+  this.location = data.location;
   this.title = observable(data.title);
   this.position = data.position;
-  this.marker = new google.mapsMarker({
+  this.marker = new google.maps.Marker({
     map: map,
-    position: this.position,
-    title: this.title()
+    position: this.position;
+    name:this.name();
   });
-  this. marker.addListener('click', function () {
-    moreInfo(self.marker);
-    togglefunction(self.marker)
+  this.setVisible = ko.observable(true);
+  this.InfoWindowContent = data.InfoWindowContent;
+  this.marker.addListener('click', function () {
+    //TODO displayContent(self.marker);
+    animate(self.marker);
   })
+};
+//#############################################################
+
+function animate(marker) {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    // Timeout after one bounce
+    setTimeout(function () {
+        marker.setAnimation(null);
+    }, 700);
 }
-moreinfo function (){
-  console.log("more Info window pops up here!");
-}
-togglefunction (){
-  console.log("toggle fuction was called! ")
-}
+
 /**
 var Location = function (data) {
     this.title = ko.observable(data.title);
