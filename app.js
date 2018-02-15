@@ -2,46 +2,58 @@ var map;
 var markers = [];
 var placeMarkers = [];
 var iHospitals = [{
-    name: 'Park Ave Penthouse',
+    name: 'Abbott Northwestern Hospital',
     location: {
-      lat: 40.7713024,
-      lng: -73.9632393
-    }
+      lat: 44.9528739,
+      lng: -93.2617964
+    },
+    place_id: 'ChIJXdyAav8n9ocRdMpjr5hMyz0',
+    address: '800 E 28th St, Minneapolis, MN 55407'
   },
   {
-    name: 'chelsea loft',
+    name: 'Hennepin County Medical Center',
     location: {
-      lat: 40.7444883,
-      lng: -73.9949465
-    }
+      lat: 44.9728387,
+      lng: -93.26270439999999
+    },
+    place_id: 'Eig3MDEgUGFyayBBdmUsIE1pbm5lYXBvbGlzLCBNTiA1NTQwNCwgVVNB',
+    address: '701 Park Ave, Minneapolis, MN 55404, USA'
   },
   {
-    name: 'Union Square Open Floor Plan',
+    name: 'University of Minnesota Masonic Childrens Hospital',
     location: {
-      lat: 40.7347062,
-      lng: -73.9895759
-    }
+      lat: 44.9677403,
+      lng: -93.2362141
+    },
+    place_id: 'ChIJ9QPoITkts1IRPSmDicBJrWE',
+    address: 'University of Minnesota Amplatz Childrens Hospital, 2450 Riverside Ave, Minneapolis, MN 55455, USA'
   },
   {
-    name: 'East Village Hip Studio',
+    name: 'Allina Health',
     location: {
-      lat: 40.7281777,
-      lng: -73.984377
-    }
+      lat: 44.94932319999999,
+      lng: -93.2607785
+    },
+    place_id:'ChIJOzhUd_4n9ocR0WugRLOdVOc',
+    address:'2925 Chicago Ave, Minneapolis, MN 55407, USA'
   },
   {
-    name: 'TriBeCa Artsy Bachelor Pad',
+    name: 'Phillips Eye Institute',
     location: {
-      lat: 40.7195264,
-      lng: -74.0089934
-    }
+      lat: 44.9601427,
+      lng: -93.26438999999999
+    },
+    place_id: 'ChIJi3Jn0q4ys1IRQNa4EzAuius',
+    address:'2215 Park Ave, Minneapolis, MN 55404, USA'
   },
   {
-    name: 'Chinatown Homey Space',
+    name: 'Shriners Hospitals for Children',
     location: {
-      lat: 40.7180628,
-      lng: -73.9961237
-    }
+      lat: 	44.958853,
+      lng: -93.2108198
+    },
+    place_id: 'ChIJG4WVM9Iss1IReV-e2LWcITk',
+    address: '2025 E River Pkwy, Minneapolis, MN 55414, USA'
   }
 ];
 
@@ -81,7 +93,7 @@ var appViewModel = function() {
       specificHopsital));
   });
 
-  var largeInfoWindow = new google.maps
+  var infowindow = new google.maps
     .InfoWindow();
   var bounds = new google.maps.LatLngBounds();
 
@@ -102,7 +114,7 @@ var appViewModel = function() {
       'click',
       function() {
         popInfoWindow(this,
-        	largeInfoWindow);
+          largeInfoWindow);
         animate(this);
       });
 
@@ -112,45 +124,46 @@ var appViewModel = function() {
 
   map.fitBounds(bounds);
 
-	this.filteredLocations = ko.computed(
-		function() {
-			var filter = self.filter();
-			if (!self.filter()) {
-				self.HospitalList().forEach(
-					function(location) {
-						location.marker.setMap(map);
-					});
-				return self.HospitalList();
-			} else {
-				return ko.utils.arrayFilter(self.HospitalList(),
-					function(loc) {
-						if (loc.name.toLowerCase().indexOf(
-								filter.toLowerCase()) !== -1) {
-							loc.marker.setMap(map);
-						} else {
-							loc.marker.setMap(null);
-						}
-						return loc.name.toLowerCase()
-							.indexOf(filter.toLowerCase()) !==
-							-1;
-					});
-			}
-}, self);
+  this.filteredLocations = ko.computed(
+    function() {
+      var filter = self.filter();
+      if (!self.filter()) {
+        self.HospitalList().forEach(
+          function(location) {
+            location.marker.setMap(map);
+          });
+        return self.HospitalList();
+      } else {
+        return ko.utils.arrayFilter(self.HospitalList(),
+          function(loc) {
+            if (loc.name.toLowerCase().indexOf(
+                filter.toLowerCase()) !== -1) {
+              loc.marker.setMap(map);
+            } else {
+              loc.marker.setMap(null);
+            }
+            return loc.name.toLowerCase()
+              .indexOf(filter.toLowerCase()) !==
+              -1;
+          });
+      }
+    }, self);
 
-	this.curMarker = ko.observable(
-		this.HospitalList()[0]);
+  this.curMarker = ko.observable(
+    this.HospitalList()[0]);
 
-	//this is where the location is set once it has been clicked on
-	//it also makes the marker bounce and infoWindow open when selected
-	//from the list
-	this.pointedLocation = function(
-		selectedLocation) {
-		animate(selectedLocation.marker);
-		populateInfoWindow(selectedLocation.marker,
-			largeInfoWindow);
-		self.curMarker(
-			selectedLocation);
-};
+  //this is where the location is set once it has been clicked on
+  //it also makes the marker bounce and infoWindow open when selected
+  //from the list
+  this.pointedLocation = function(
+    selectedLocation) {
+    animate(selectedLocation.marker);
+    //populateInfoWindow(selectedLocation.marker,
+    //largeInfoWindow);
+    wikiInfo(selectedLocation.marker);
+    self.curMarker(
+      selectedLocation);
+  };
 
 
   // TODO use this filter only when markers are setMap/rendered
@@ -165,19 +178,20 @@ var appViewModel = function() {
       });
       return self.HospitalList;
     } else {
-      			return ko.utils.arrayFilter(location, function() {
-      		 		var match = location.title.toLowerCase().indexOf(filter) !== -1;
-      		 		if (match) {
-      		 			location.marker.setVisible(true);
-      		 		} else {
-      		 			location.marker.setVisible(false);
-      		 		}
-      		 		return match;
-      	 	});
+      return ko.utils.arrayFilter(location, function() {
+        var match = location.title.toLowerCase().indexOf(filter) !== -1;
+        if (match) {
+          location.marker.setVisible(true);
+        } else {
+          location.marker.setVisible(false);
+        }
+        return match;
+      });
     }
   });
 
 };
+
 // on that markers position.
 function popInfoWindow(marker, infowindow) {
   // Check to make sure the infowindow is not already opened on this marker.
@@ -192,6 +206,43 @@ function popInfoWindow(marker, infowindow) {
   }
 }
 
+
+var infowindow;
+
+function wikiInfo(marker) {
+  var contentString = '';
+  // load wikipedia data
+  var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' +
+    marker.title + '&format=json&callback=wikiCallback';
+  var wikiRequestTimeout = setTimeout(function() {
+    contentString = 'Failed to get wikipedia resources';
+    infowindow.setContent(contentString);
+    infowindow.open(map, marker);
+  }, 6000);
+
+  infowindow.open(map, marker);
+
+  $.ajax({
+    url: wikiUrl,
+    dataType: 'jsonp',
+    jsonp: 'callback',
+    success: function(response) {
+
+      var articleList = response[2];
+      if (!articleList) {
+        contentString = 'Data is not available.';
+      } else {
+        for (var i = 0; i < articleList.length; i++) {
+          articleStr = articleList[i];
+          contentString += articleStr;
+        }
+      }
+
+      clearTimeout(wikiRequestTimeout);
+      infowindow.setContent(contentString);
+    }
+  });
+}
 
 function animate(marker) {
   marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -211,9 +262,15 @@ function initMap() {
     zoom: 13,
     mapTypeControl: false
   });
+  infowindow = new google.maps.InfoWindow();
   ko.applyBindings(new appViewModel());
 }
-
+/** ---FourSquare API
+Client ID
+VN1PICLHTP5YBRBYBL33XOTLDUQVAA0PN1ULKHAVG51SSKYT
+Client Secret
+F1MXEKCLU1WI5TYXAHTWARUYZ3N1L4OPBEVL01E3EKSBDJHM
+**/
 /**
 var Location = function (data) {
     this.title = ko.observable(data.title);
