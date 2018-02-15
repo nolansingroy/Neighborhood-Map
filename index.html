@@ -31,12 +31,14 @@
 		<div class="input-group">
 		<input data-bind="value: filter, valueUpdate:'afterkeydown'" class="form-control" placeholder="filter">
 		<span class="input-group-btn">
-		<button class="btn btn-default" type="submit" data-bind"click: filter"> go</button></span>
+		<button class="btn btn-default" type="submit" data-bind="click: filter"> go</button></span>
 		</div>
     <div>
-
+      <p>Filter:
+      				<input data-bind="textInput: filter"/>
+      </p>
       <ul class="list-unstyled" data-bind="foreach: filteredLocations">
-          <li><a href="#" data-bind="text: title, click: $root.out"></a></li>
+          <li><a href="#" data-bind="text: name, click: $root.pointedLocation"></a></li>
 </ul>
 
     </div>
