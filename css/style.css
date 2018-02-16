@@ -29,18 +29,155 @@ h1 {
 #show-listings {
   width: 48%;
 }
+#wrapper {
+    display: flex;
+}
+#nav {
+    flex: 0 0 auto;
+    width: 300px;
+    order: 1;
+    border-left: 1px solid ;
+    background: white;
+}
+.hide {
+    display: none;
+    visibility: hidden;
+}
+#nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#nav ul li {
+    display: block;
+    margin: 0;
+    text-align: center;
+    padding: 0.5rem 0.25rem;
+    margin: 0;
+    background-color: #ccc;
+    cursor: pointer;
+    border-bottom: 2px solid #191919;
+}
+#nav ul li.active {
+    background-color: orange;
+}
+#nav .filter {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0 1rem;
+    height: 2rem;
+    line-height: 2rem;
+    font-size: 1rem;
+    border: none;
+}
+#nav label {
+    display: block;
+    width: 90%;
+    margin: 0 auto;
+    font-size: 1rem;
+}
+#menu {
+  z-index: 1000;
+  position: fixed;
+}
+.toggle-navigation{
+    position: absolute;
+    z-index: 999;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.5rem;
+}
 hr {
   background: #D0D7D9;
   height: 1px;
   margin: 20px 0 20px 0;
   border: none;
 }
-#map {
-  position: absolute;
-  width:100%;
+#main-container {
+    flex: 1 1 auto;
+    height: 100vh;
+    position: relative;
+}
+
+li {
+  list-style-position: inside;
+  list-style-type: none;
+  padding: 5px 10px;
+  background: #f7f7f7;
+  border-bottom: #43aa8b 1px solid;
+}
+
+li:hover {
+  cursor: pointer;
+  opacity: .5;
+  filter: alpha(opacity=100);
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
   height: 100%;
-  left: 0px;
-  right: 0px;
+}
+
+.fa-lg.fa-arrow-circle-up,
+.fa-lg.fa-arrow-circle-down {
+  margin: 5px;
+  padding: 10px;
+}
+
+.list {
+  color:#254441;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+  z-index: 1;
+  padding-top: 10px;
+}
+
+.map {
+  max-width: 100%;
+  height: 100%;
+  background-color: #CCC;
+  z-index: 0;
+}
+
+.map-error {
+  max-width: 100%;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background: #f7f7f7;
+  color:#254441;
+
+}
+.filter {
+  background: #f7f7f7;
+}
+
+.filter-input {
+  max-width: 80%;
+  vertical-align: center;
+  color: #43aa8b;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.menu {
+  position: absolute;
+  width: 250px;
+  height: 100%;
+  z-index: 10;
+  background: #f7f7f7;
+  top: 60px;
+  max-height: 90%;
+  overflow: scroll;
+  padding: 10px;
+  opacity: 0.8;
+}
+#map {
+  height: 100%;
 }
 .options-box {
   background: #fff;

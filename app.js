@@ -20,7 +20,7 @@ var iHospitals = [{
     address: '701 Park Ave, Minneapolis, MN 55404, USA'
   },
   {
-    name: 'University of Minnesota Masonic Childrens Hospital',
+    name: 'University of Minnesota Childrens Hospital',
     location: {
       lat: 44.9677403,
       lng: -93.2362141

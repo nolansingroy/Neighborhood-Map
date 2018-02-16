@@ -13,43 +13,22 @@
 
 
 <body>
-<!------>
-<nav class="navbar navbar-inverse navbar-static-top">
-    <button type="button" class="navbar-toggle pull-left toggle-nav"
-            aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-    </button>
-</nav>
-
-<div class="container-fluid">
-<div class="row">
-
-	<div class="col-3">
-		<div class="input-group">
-		<input data-bind="value: filter, valueUpdate:'afterkeydown'" class="form-control" placeholder="filter">
-		<span class="input-group-btn">
-		<button class="btn btn-default" type="submit" data-bind="click: filter"> go</button></span>
-		</div>
+<div id="container-fluid">
+<div id="nav">
     <div>
       <p>Filter:
       				<input data-bind="textInput: filter"/>
       </p>
       <ul class="list-unstyled" data-bind="foreach: filteredLocations">
           <li><a href="#" data-bind="text: name, click: $root.pointedLocation"></a></li>
-</ul>
-
+        </ul>
     </div>
-	</div>
-	<div class="col-9">
- <main class="map" id="map"></main>
+</div>
+  <div id="main-container">
+	   <div id="map"></div>
+     <button class="toggle-navigation" data-bind="click: togNav">x</button>
   </div>
-
 </div>
-</div>
-
 <!--local script link-->
 <script type="text/javascript" src="app.js"></script>
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
