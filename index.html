@@ -13,22 +13,26 @@
 
 
 <body>
-<div id="container-fluid">
-<div id="nav">
-    <div>
+<div id="container" class="container">
+<div id="menu">
+    <div id="list-container" class="list-container">
       <p>Filter:
       				<input data-bind="textInput: filter"/>
       </p>
-      <ul class="list-unstyled" data-bind="foreach: filteredLocations">
+      <ul id="list" class="list" class="list-unstyled" data-bind="foreach: filteredLocations">
           <li><a href="#" data-bind="text: name, click: $root.pointedLocation"></a></li>
         </ul>
     </div>
 </div>
-  <div id="main-container">
-	   <div id="map"></div>
-     <button class="toggle-navigation" data-bind="click: togNav">x</button>
-  </div>
+<div id="main-container">
+   <div id="map"></div>
+   <button class="toggle-navigation" data-bind="click: togNav">x</button>
 </div>
+
+<div id="map" class="map"></div>
+</div>
+<!--
+-->
 <!--local script link-->
 <script type="text/javascript" src="app.js"></script>
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
