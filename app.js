@@ -228,13 +228,13 @@ function wikiInfo(marker) {
     jsonp: 'callback',
     success: function(response) {
 
-      var articleList = response[2];
-      if (!articleList) {
+      var wikiList = response[2];
+      if (!wikiList) {
         contentString = 'Data is not available.';
       } else {
-        for (var i = 0; i < articleList.length; i++) {
-          articleStr = articleList[i];
-          contentString += articleStr;
+        for (var i = 0; i < wikiList.length; i++) {
+          wikiStr = wikiList[i];
+          contentString += wikiStr;
         }
       }
 
@@ -249,6 +249,14 @@ function animate(marker) {
   setTimeout(function() {
     marker.setAnimation(null);
   }, 1400);
+}
+
+/**
+* Handle error if Google map failed to load.
+*/
+function mapError() {
+	window.alert("Failed to load Google Map.");
+  console.log("google api error");
 }
 
 function initMap() {
