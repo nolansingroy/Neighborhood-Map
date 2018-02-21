@@ -64,7 +64,8 @@ var HospitalModel = function(data) {
   var self = this;
   this.name = data.name;
   this.location = data.location;
-  //this.title = observable(data.title);
+  this.address = data.address;
+  //this. = observable(data.title);
   //this.position = data.position;
   //this.marker = new google.maps.Marker({
   //  map: map,
@@ -113,8 +114,8 @@ var appViewModel = function() {
     location.marker.addListener(
       'click',
       function() {
-        popInfoWindow(this,
-          largeInfoWindow);
+        wikiInfo(location.marker);
+        //popInfoWindow(this,infowindow);
         animate(this);
       });
 
@@ -158,9 +159,10 @@ var appViewModel = function() {
   this.pointedLocation = function(
     selectedLocation) {
     animate(selectedLocation.marker);
-    //populateInfoWindow(selectedLocation.marker,
-    //largeInfoWindow);
-    wikiInfo(selectedLocation.marker);
+    //display mainpoints about the location
+    popInfoWindow(selectedLocation.marker,infowindow);
+    //displays wiki content about the locaiton
+    //wikiInfo(selectedLocation.marker);
     self.curMarker(
       selectedLocation);
   };
@@ -195,6 +197,8 @@ var appViewModel = function() {
 // on that markers position.
 function popInfoWindow(marker, infowindow) {
   // Check to make sure the infowindow is not already opened on this marker.
+  //wikiInfo(marker);
+  // not really nessary to display main points at this time
   if (infowindow.marker != marker) {
     infowindow.marker = marker;
     infowindow.setContent('<div>' + marker.title + '</div>');
@@ -257,6 +261,9 @@ function animate(marker) {
 function mapError() {
 	window.alert("Failed to load Google Map.");
   console.log("google api error");
+}
+function togNav(){
+  console.log("tog nav ");
 }
 
 function initMap() {
