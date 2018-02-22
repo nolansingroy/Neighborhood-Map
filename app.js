@@ -34,8 +34,8 @@ var iHospitals = [{
       lat: 44.94932319999999,
       lng: -93.2607785
     },
-    place_id:'ChIJOzhUd_4n9ocR0WugRLOdVOc',
-    address:'2925 Chicago Ave, Minneapolis, MN 55407, USA'
+    place_id: 'ChIJOzhUd_4n9ocR0WugRLOdVOc',
+    address: '2925 Chicago Ave, Minneapolis, MN 55407, USA'
   },
   {
     name: 'Phillips Eye Institute',
@@ -44,12 +44,12 @@ var iHospitals = [{
       lng: -93.26438999999999
     },
     place_id: 'ChIJi3Jn0q4ys1IRQNa4EzAuius',
-    address:'2215 Park Ave, Minneapolis, MN 55404, USA'
+    address: '2215 Park Ave, Minneapolis, MN 55404, USA'
   },
   {
     name: 'Shriners Hospitals for Children',
     location: {
-      lat: 	44.958853,
+      lat: 44.958853,
       lng: -93.2108198
     },
     place_id: 'ChIJG4WVM9Iss1IReV-e2LWcITk',
@@ -59,13 +59,12 @@ var iHospitals = [{
 
 /**
 ###########  Hosipital Model data and behavior class ##########
-**/
+*/
 var HospitalModel = function(data) {
   var self = this;
   this.name = data.name;
   this.location = data.location;
   this.address = data.address;
-  //this. = observable(data.title);
   //this.position = data.position;
   //this.marker = new google.maps.Marker({
   //  map: map,
@@ -94,6 +93,11 @@ var appViewModel = function() {
       specificHopsital));
   });
 
+  // sidebar  button control
+  this.isSideBarClosed = ko.observable(false);
+  this.sideBarClick = function() {
+    this.isSideBarClosed(!this.isSideBarClosed());
+  };
   var infowindow = new google.maps
     .InfoWindow();
   var bounds = new google.maps.LatLngBounds();
@@ -160,38 +164,39 @@ var appViewModel = function() {
     selectedLocation) {
     animate(selectedLocation.marker);
     //display mainpoints about the location
-    popInfoWindow(selectedLocation.marker,infowindow);
+    popInfoWindow(selectedLocation.marker, infowindow);
     //displays wiki content about the locaiton
     //wikiInfo(selectedLocation.marker);
     self.curMarker(
       selectedLocation);
+    map.panTo(self.curMarker().marker.position);
   };
 
 
   // TODO use this filter only when markers are setMap/rendered
   // in class prior viewModel
-  this.filteredLocations1 = ko.computed(function() {
-    var filter = self.filter().toLowerCase();
-    if (!filter) {
-      iHospitals.forEach(function(location) {
-        if (location.marker) {
-          location.marker.setVisible(true);
-        }
-      });
-      return self.HospitalList;
-    } else {
-      return ko.utils.arrayFilter(location, function() {
-        var match = location.title.toLowerCase().indexOf(filter) !== -1;
-        if (match) {
-          location.marker.setVisible(true);
-        } else {
-          location.marker.setVisible(false);
-        }
-        return match;
-      });
-    }
-  });
-
+  /**  this.filteredLocations1 = ko.computed(function() {
+      var filter = self.filter().toLowerCase();
+      if (!filter) {
+        iHospitals.forEach(function(location) {
+          if (location.marker) {
+            location.marker.setVisible(true);
+          }
+        });
+        return self.HospitalList;
+      } else {
+        return ko.utils.arrayFilter(location, function() {
+          var match = location.title.toLowerCase().indexOf(filter) !== -1;
+          if (match) {
+            location.marker.setVisible(true);
+          } else {
+            location.marker.setVisible(false);
+          }
+          return match;
+        });
+      }
+    });
+  */
 };
 
 // on that markers position.
@@ -212,7 +217,7 @@ function popInfoWindow(marker, infowindow) {
 
 
 var infowindow;
-
+//wiki function to populate infowindow with content
 function wikiInfo(marker) {
   var contentString = '';
   // load wikipedia data
@@ -225,7 +230,7 @@ function wikiInfo(marker) {
   }, 6000);
 
   infowindow.open(map, marker);
-
+  //ajax call
   $.ajax({
     url: wikiUrl,
     dataType: 'jsonp',
@@ -256,15 +261,13 @@ function animate(marker) {
 }
 
 /**
-* Handle error if Google map failed to load.
-*/
+ * Handle error if Google map failed to load.
+ */
 function mapError() {
-	window.alert("Failed to load Google Map.");
+  window.alert("Failed to load Google Map.");
   console.log("google api error");
 }
-function togNav(){
-  console.log("tog nav ");
-}
+
 
 function initMap() {
 
@@ -280,120 +283,10 @@ function initMap() {
   infowindow = new google.maps.InfoWindow();
   ko.applyBindings(new appViewModel());
 }
-/** ---FourSquare API
-Client ID
-VN1PICLHTP5YBRBYBL33XOTLDUQVAA0PN1ULKHAVG51SSKYT
-Client Secret
-F1MXEKCLU1WI5TYXAHTWARUYZ3N1L4OPBEVL01E3EKSBDJHM
-**/
-/**
-var Location = function (data) {
-    this.title = ko.observable(data.title);
-    this.position = data.position;
-    this.marker = new google.maps.Marker({
-        map: map,
-        position: this.position,
-        title: this.title()
-    });
 
-    var self = this;
-
-    this.marker.addListener('click', function () {
-        showInfo(self.marker);
-        toggleBounce(self.marker);
-    });
-};
-
-function toggleBounce(marker) {
-    marker.setAnimation(google.maps.Animation.BOUNCE);
-    // Timeout after one bounce
-    setTimeout(function () {
-        marker.setAnimation(null);
-    }, 700);
-}
-
-var infowindow;
-
-function showInfo(marker) {
-    var contentString = '';
-    // load wikipedia data
-    var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search='
-        + marker.title + '&format=json&callback=wikiCallback';
-    var wikiRequestTimeout = setTimeout(function () {
-        contentString = 'Failed to get wikipedia resources';
-        infowindow.setContent(contentString);
-        infowindow.open(map, marker);
-    }, 6000);
-
-    infowindow.open(map, marker);
-
-    $.ajax({
-        url: wikiUrl,
-        dataType: 'jsonp',
-        jsonp: 'callback',
-        success: function (response) {
-
-            var articleList = response[2];
-            if (!articleList) {
-                contentString = 'Data is not available.';
-            }
-            else {
-                for (var i = 0; i < articleList.length; i++) {
-                    articleStr = articleList[i];
-                    contentString += articleStr;
-                }
-            }
-
-            clearTimeout(wikiRequestTimeout);
-            infowindow.setContent(contentString);
-        }
-    });
-}
-
-var ViewModel = function () {
-    var self = this;
-
-    this.locationList = ko.observableArray([]);
-    this.filter = ko.observable('');
-
-    initialLocations.forEach(function (locationItem) {
-        self.locationList.push(new Location(locationItem));
-    });
-
-    this.filteredLocations = ko.computed(function () {
-        return ko.utils.arrayFilter(self.locationList(), function (location) {
-            if (self.filter().length === 0 ||
-                location.title().toLowerCase().includes(self.filter().toLowerCase())) {
-                location.marker.setVisible(true);
-                return true;
-            } else {
-                location.marker.setVisible(false);
-                return false;
-            }
-        });
-    });
-
-    this.showLocation = function (clickedLocation) {
-        showInfo(clickedLocation.marker);
-        toggleBounce(clickedLocation.marker);
-    };
-};
-
-
- * Initialize Google Maps.
- **/
-/*
-function initMap() {
-    var singapore = new google.maps.LatLng(1.379943, 103.806161);
-    map = new google.maps.Map(document.getElementsByClassName('map')[0], {
-        center: singapore,
-        zoom: 10
-    });
-    infowindow = new google.maps.InfoWindow();
-    ko.applyBindings(new ViewModel());
-}
-
-function googleError() {
-    $('.map').text('Failed to load Google Maps.');
-}
-*/
+/** TODO ---FourSquare API
+ * Client ID
+ * VN1PICLHTP5YBRBYBL33XOTLDUQVAA0PN1ULKHAVG51SSKYT
+ * Client Secret
+ * F1MXEKCLU1WI5TYXAHTWARUYZ3N1L4OPBEVL01E3EKSBDJHM
+ */
