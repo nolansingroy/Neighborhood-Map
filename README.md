@@ -1,10 +1,11 @@
-# Neighborhood- Map
+# Udacity Neighborhood Map
 
+# How to run website
 
-# ** notice ** this project is part of the udacity nanodegree fullstack web developer program.
-# Documentations 
-http://developers.google.com/maps/documentation/directions/
+1. Download git repository
 
-#issues 
-sidebar toggle 
-mobile support  
+2. Within your terminal execute `$ browser index.html` replacing browser with your current browser e.i `$ firefox index.html`
+
+# About
+
+This website was designed with knockout.js MVVM for organization and utilizes google maps and wikimedia api to display information on a mobile ready web page containing markers of a couple hospitals in the Twin Cities! 
