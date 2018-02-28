@@ -164,9 +164,9 @@ var appViewModel = function() {
     selectedLocation) {
     animate(selectedLocation.marker);
     //display mainpoints about the location
-    popInfoWindow(selectedLocation.marker, infowindow);
+//    popInfoWindow(selectedLocation.marker, infowindow);
     //displays wiki content about the locaiton
-    //wikiInfo(selectedLocation.marker);
+    wikiInfo(selectedLocation.marker);
     self.curMarker(
       selectedLocation);
     map.panTo(self.curMarker().marker.position);
