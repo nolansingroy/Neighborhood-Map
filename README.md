@@ -9,7 +9,6 @@ https:github.com/nolansingroy/...
 
 
 # About
-
 This website was designed with knockout.js 
 MVVM for organization and utilizes google maps and 
 wikimedia api to display information on a mobile ready web page containing markers of a couple hospitals in the Twin Cities! 
@@ -21,5 +20,5 @@ Mapbox service
 SPEED:
 MINIFIY FILES 
 create json for fetching images 
-
+convert to vue application 
 
