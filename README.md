@@ -18,4 +18,8 @@ wikimedia api to display information on a mobile ready web page containing marke
 Google Maps Billing updated therefore you should convert to the 
 Mapbox service
 
+SPEED:
+MINIFIY FILES 
 create json for fetching images 
+
+
