@@ -103,7 +103,10 @@ li:hover {
   background-color: #CCC;
   z-index: 0;
 }
-
+.fa-arrow-left {
+    content: "\f060";
+    padding: 15px;
+}
 .map-error {
   max-width: 100%;
   position: fixed;
